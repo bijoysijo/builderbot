@@ -50,7 +50,11 @@ async def on_message(message):
     await message.channel.send(quote)
 
   if any(word in message.content for word in sad_words):
-    await message.channel.send(random.choice(starter_encouragements))
+    db = getdb("encouragements")
+    if db.get("encouragements")["cheers"]:
+      await message.channel.send(random.choice(db.get("encouragements")["cheers"]))
+    else:
+      await message.channel.send(random.choice(starter_encouragements))
 
   if message.content.startswith('!new'):
     encouraging_message = message.content.split('!new ', 1)[1]
